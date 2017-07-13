@@ -9,19 +9,32 @@ from requests.auth import HTTPBasicAuth
 from selenium import webdriver
 import time
 
-username="c0000004812"
-passwd="abcd"
-browser = webdriver.Chrome("D:\ProgramData\Anaconda3\chromedriver_win32\chromedriver")
-browser.get('http://www.kinghome.it/jking/index.php#log')
-browser.implicitly_wait(10)
-elem=browser.find_element_by_id("user")
-elem.send_keys(username)
-elem=browser.find_element_by_id("pass")
-elem.send_keys(passwd)
-elem=browser.find_element_by_id("dolog")
-elem.click()
-browser.implicitly_wait(10)
-print()
+# driver = webdriver.PhantomJS(executable_path='C:/Users/lk235\Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
+driver = webdriver.Chrome(executable_path='C:/Users/lk235/Anaconda3/chromedriver_win32/chromedriver')
+driver.get("http://www.kinghome.it/jking/index.php#log")
+time.sleep(10)
+username = driver.find_element_by_name("user")
+password = driver.find_element_by_name("pass")
+username.send_keys("c0000004812")
+password.send_keys("abcd")
+form = driver.find_element_by_id('login')
+form.submit()
+time.sleep(10)
+print(driver.find_element_by_id('section').text)
+driver.close()
+# username="c0000004812"
+# passwd="abcd"
+# browser = webdriver.Chrome("C:\Users\lk235\Anaconda3\chromedriver_win32\chromedriver")
+# browser.get('http://www.kinghome.it/jking/index.php#log')
+# browser.implicitly_wait(10)
+# elem=browser.find_element_by_id("user")
+# elem.send_keys(username)
+# elem=browser.find_element_by_id("pass")
+# elem.send_keys(passwd)
+# elem=browser.find_element_by_id("dolog")
+# elem.click()
+# browser.implicitly_wait(10)
+# print()
 
 # driver = webdriver.PhantomJS(executable_path='D:/ProgramData/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
 # driver.get("http://www.kinghome.it/jking/index.php#log")
