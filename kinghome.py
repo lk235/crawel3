@@ -6,21 +6,35 @@ import datetime
 import requests
 from requests.auth import AuthBase
 from requests.auth import HTTPBasicAuth
-from selenium import webdriver
+from  selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 
-# driver = webdriver.PhantomJS(executable_path='C:/Users/lk235\Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
-driver = webdriver.Chrome(executable_path='C:/Users/lk235/Anaconda3/chromedriver_win32/chromedriver')
+# driver = webdriver.PhantomJS(executable_path='D:/ProgramData/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
+driver = webdriver.Chrome(executable_path='D:/ProgramData/Anaconda3/chromedriver_win32/chromedriver')
 driver.get("http://www.kinghome.it/jking/index.php#log")
-time.sleep(10)
-username = driver.find_element_by_name("user")
-password = driver.find_element_by_name("pass")
-username.send_keys("c0000004812")
-password.send_keys("abcd")
-form = driver.find_element_by_id('login')
-form.submit()
-time.sleep(10)
-print(driver.find_element_by_id('section').text)
+
+try:
+    username = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, "user"))
+    )
+    # password = WebDriverWait(driver, 10).until(
+    #     EC.presence_of_element_located((By.ID, "pass"))
+    # )
+finally:
+    driver.quit()
+# time.sleep(10)
+# driver.implicitly_wait(20)
+username = driver.find_element_by_id("user")
+# password = driver.find_element_by_name("pass")
+# username.send_keys("c0000004812")
+# password.send_keys("abcd")
+# form = driver.find_element_by_id('login')
+# form.submit()
+# time.sleep(10)
+# print(driver.find_element_by_id('section').text)
 driver.close()
 # username="c0000004812"
 # passwd="abcd"
