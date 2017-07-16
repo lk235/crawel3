@@ -12,30 +12,104 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-# driver = webdriver.PhantomJS(executable_path='D:/ProgramData/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
-driver = webdriver.Chrome(executable_path='D:/ProgramData/Anaconda3/chromedriver_win32/chromedriver')
-driver.get("http://www.kinghome.it/jking/index.php#log")
+usernameStr = 'c0000004812'
+passwordStr = 'abcd'
 
-try:
-    username = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "user"))
-    )
+# driver = webdriver.PhantomJS(executable_path='D:/ProgramData/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
+# driver = webdriver.Chrome(executable_path='D:/ProgramData/Anaconda3/chromedriver_win32/chromedriver')
+browser = webdriver.Chrome(executable_path='C:/Users/lk235/Anaconda3/chromedriver_win32/chromedriver')
+# browser = webdriver.PhantomJS(executable_path='C:/Users/lk235/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
+browser.get("http://www.kinghome.it/jking/index.php#log")
+
+username = WebDriverWait(browser, 10).until(
+    EC.presence_of_element_located((By.ID, "user"))
+)
+
+# username = browser.find_element_by_id('user')
+username.send_keys(usernameStr)
+print("send username")
+password = browser.find_element_by_id('pass')
+password.send_keys(passwordStr)
+print("send pass")
+log_button = browser.find_element_by_id('dolog')
+log_button.click()
+print("click")
+time.sleep(10)
+
+# eans = browser.find_elements_by_xpath("//div/table/tbody/tr[1]/td[2]")
+# for ean in eans:
+#     print(ean.text)
+
+# print(browser.find_element_by_class_name('description').)
+# print(browser.find_element_by_xpath('//div[@class="hideblock"]/table/tbody/tr[2]/td').text )
+
+
+# prices = browser.find_elements_by_class_name('final-price')
+# for price in prices:
+#     print(price.text)
+
+pageSource = browser.page_source
+bsObj = BeautifulSoup(pageSource)
+# bsObj =  BeautifulSoup(pageSource, "lxml")
+
+# descs = bsObj.findAll('div',{'class':'description'})
+# for desc in descs:
+#     print(desc.get_text())
+
+for link in bsObj.findAll('a'):
+    if 'href'in link.attrs:
+        print(link.attrs['href'])
+# print(bsObj)
+
+# print(browser.get_cookies())
+# print(browser.find_element_by_id('').text)
+
+
+
+
+
+
+
+
+
+# try:
+    # username = WebDriverWait(driver, 10).until(
+    #     EC.presence_of_element_located((By.ID, "user"))
+    # )
+    # username.send_keys("c0000004812")
+    # print("username done")
     # password = WebDriverWait(driver, 10).until(
     #     EC.presence_of_element_located((By.ID, "pass"))
     # )
-finally:
-    driver.quit()
+    # password.send_keys("abcd")
+    # print("password done")
+
+    # log_button = WebDriverWait(driver, 10).until(
+    #     EC.presence_of_element_located((By.ID, "dolog"))
+    # )
+
+    # print("finally")
+# username = driver.find_element_by_id("user")
+# username.send_keys("c0000004812")
+# password = driver.find_element_by_id("pass")
+# password.send_keys("abcd")
+# button = driver.find_element_by_id("dolog")
+# button.click()
+
+
+# finally:
+
+# driver.close()
 # time.sleep(10)
 # driver.implicitly_wait(20)
-username = driver.find_element_by_id("user")
+
 # password = driver.find_element_by_name("pass")
-# username.send_keys("c0000004812")
-# password.send_keys("abcd")
+
 # form = driver.find_element_by_id('login')
 # form.submit()
 # time.sleep(10)
 # print(driver.find_element_by_id('section').text)
-driver.close()
+
 # username="c0000004812"
 # passwd="abcd"
 # browser = webdriver.Chrome("C:\Users\lk235\Anaconda3\chromedriver_win32\chromedriver")
