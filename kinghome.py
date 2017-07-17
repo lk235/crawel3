@@ -44,21 +44,30 @@ time.sleep(10)
 # print(browser.find_element_by_xpath('//div[@class="hideblock"]/table/tbody/tr[2]/td').text )
 
 
+
+browser.get('http://www.kinghome.it/jking/product/?fl=&lang=zh-cn')
+time.sleep(10)
 # prices = browser.find_elements_by_class_name('final-price')
 # for price in prices:
 #     print(price.text)
 
 pageSource = browser.page_source
 bsObj = BeautifulSoup(pageSource)
-# bsObj =  BeautifulSoup(pageSource, "lxml")
+descriptions = bsObj.findAll('div',{'class':'description'})
+for description in descriptions:
+    print(description.get_text())
 
-# descs = bsObj.findAll('div',{'class':'description'})
-# for desc in descs:
-#     print(desc.get_text())
+eans = browser.find_elements_by_xpath("//li/table/tbody/tr[1]/td[2]")
+for ean in eans:
+    print(ean.text)
 
-for link in bsObj.findAll('a'):
-    if 'href'in link.attrs:
-        print(link.attrs['href'])
+
+
+
+
+# for link in bsObj.findAll('a'):
+#     if 'href'in link.attrs:
+#         print(link.attrs['href'])
 # print(bsObj)
 
 # print(browser.get_cookies())
