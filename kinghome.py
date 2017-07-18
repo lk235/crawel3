@@ -12,15 +12,22 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import csv
+import pymysql
 
 usernameStr = 'c0000004812'
 passwordStr = 'abcd'
-csvFile = open("C:/Users/Administrator/Desktop/titago/python/test.csv",'w+')
+# conn = pymysql.connect(host='127.0.0.1', user='lk235',passWd='None',db='python')
+# cur = conn.cursor()
+# cur.execute('select * from kinghome')
+# print(cur.fetchone())
+# cur.close()
+# conn.close()
+# csvFile = open("C:/Users/Administrator/Desktop/titago/python/test.csv",'w+')
 
-browser = webdriver.PhantomJS(executable_path='D:/ProgramData/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
+# browser = webdriver.PhantomJS(executable_path='D:/ProgramData/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
 # browser = webdriver.Chrome(executable_path='D:/ProgramData/Anaconda3/chromedriver_win32/chromedriver')
 # browser = webdriver.Chrome(executable_path='C:/Users/lk235/Anaconda3/chromedriver_win32/chromedriver')
-# browser = webdriver.PhantomJS(executable_path='C:/Users/lk235/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
+browser = webdriver.PhantomJS(executable_path='C:/Users/lk235/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
 browser.get("http://www.kinghome.it/jking/index.php#log")
 
 username = WebDriverWait(browser, 10).until(
@@ -44,28 +51,37 @@ time.sleep(10)
 
 # print(browser.find_element_by_class_name('description').)
 # print(browser.find_element_by_xpath('//div[@class="hideblock"]/table/tbody/tr[2]/td').text )
+eanText = []
+ivatoText = []
+descText = []
 
 def getproduct():
+    list
     prices = browser.find_elements_by_class_name('final-price')
     for price in prices:
         print(price.text)
+        ivatoText.append(price.text)
+
+
 
     pageSource = browser.page_source
     bsObj = BeautifulSoup(pageSource)
     descriptions = bsObj.findAll('div', {'class': 'description'})
     for description in descriptions:
         print(description.get_text())
+        descText.append(description.get_text())
 
     eans = browser.find_elements_by_xpath("//li/table/tbody/tr[1]/td[2]")
     for ean in eans:
         print(ean.text)
+        eanText.append(ean.text)
 
 nextPage = browser.get('http://www.kinghome.it/jking/product/?fl=&lang=zh-cn')
 time.sleep(5)
 getproduct()
 count = 0
 
-while True:
+while count < 10:
     try:
         nextPageLink = browser.find_element_by_id('next')
     except:
@@ -82,8 +98,11 @@ while True:
     time.sleep(5)
     getproduct()
     count = count + 1
+listAll = []
+for i in range(0,len(eanText)-1):
+    listAll.append(eanText[i] +','+descText[i] +','+ivatoText[i])
 
-
+print(listAll)
 
 
 
