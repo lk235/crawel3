@@ -11,13 +11,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+import csv
 
 usernameStr = 'c0000004812'
 passwordStr = 'abcd'
+csvFile = open("C:/Users/Administrator/Desktop/titago/python/test.csv",'w+')
 
-# driver = webdriver.PhantomJS(executable_path='D:/ProgramData/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
-# driver = webdriver.Chrome(executable_path='D:/ProgramData/Anaconda3/chromedriver_win32/chromedriver')
-browser = webdriver.Chrome(executable_path='C:/Users/lk235/Anaconda3/chromedriver_win32/chromedriver')
+browser = webdriver.PhantomJS(executable_path='D:/ProgramData/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
+# browser = webdriver.Chrome(executable_path='D:/ProgramData/Anaconda3/chromedriver_win32/chromedriver')
+# browser = webdriver.Chrome(executable_path='C:/Users/lk235/Anaconda3/chromedriver_win32/chromedriver')
 # browser = webdriver.PhantomJS(executable_path='C:/Users/lk235/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
 browser.get("http://www.kinghome.it/jking/index.php#log")
 
@@ -43,23 +45,52 @@ time.sleep(10)
 # print(browser.find_element_by_class_name('description').)
 # print(browser.find_element_by_xpath('//div[@class="hideblock"]/table/tbody/tr[2]/td').text )
 
+def getproduct():
+    prices = browser.find_elements_by_class_name('final-price')
+    for price in prices:
+        print(price.text)
+
+    pageSource = browser.page_source
+    bsObj = BeautifulSoup(pageSource)
+    descriptions = bsObj.findAll('div', {'class': 'description'})
+    for description in descriptions:
+        print(description.get_text())
+
+    eans = browser.find_elements_by_xpath("//li/table/tbody/tr[1]/td[2]")
+    for ean in eans:
+        print(ean.text)
+
+nextPage = browser.get('http://www.kinghome.it/jking/product/?fl=&lang=zh-cn')
+time.sleep(5)
+getproduct()
+count = 0
+
+while True:
+    try:
+        nextPageLink = browser.find_element_by_id('next')
+    except:
+        break
+    # try:
+    #     nextPageLink = WebDriverWait(browser, 10).until(
+    #         EC.presence_of_element_located((By.ID, "next"))
+    #     )
+    # except :
+    #     break
 
 
-browser.get('http://www.kinghome.it/jking/product/?fl=&lang=zh-cn')
-time.sleep(10)
-# prices = browser.find_elements_by_class_name('final-price')
-# for price in prices:
-#     print(price.text)
+    nextPageLink.click()
+    time.sleep(5)
+    getproduct()
+    count = count + 1
 
-pageSource = browser.page_source
-bsObj = BeautifulSoup(pageSource)
-descriptions = bsObj.findAll('div',{'class':'description'})
-for description in descriptions:
-    print(description.get_text())
 
-eans = browser.find_elements_by_xpath("//li/table/tbody/tr[1]/td[2]")
-for ean in eans:
-    print(ean.text)
+
+
+
+
+
+
+
 
 
 
