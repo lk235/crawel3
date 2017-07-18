@@ -98,11 +98,22 @@ while count < 10:
     time.sleep(5)
     getproduct()
     count = count + 1
-listAll = []
-for i in range(0,len(eanText)-1):
-    listAll.append(eanText[i] +','+descText[i] +','+ivatoText[i])
 
-print(listAll)
+csvFile = open("C:/Users/lk235/Desktop/titago/python/test.csv",'w+')
+try:
+    writer = csv.writer(csvFile)
+    writer.writerow(('ean', 'des', 'ivato'))
+    for i in range(0,len(eanText)-1):
+        writer.writerow((eanText[i],descText[i],ivatoText[i]))
+
+finally:
+    csvFile.close()
+
+# listAll = []
+# for i in range(0,len(eanText)-1):
+#     listAll.append(eanText[i] +','+descText[i] +','+ivatoText[i])
+#
+# print(listAll)
 
 
 
