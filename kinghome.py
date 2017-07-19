@@ -24,10 +24,10 @@ passwordStr = 'abcd'
 # conn.close()
 # csvFile = open("C:/Users/Administrator/Desktop/titago/python/test.csv",'w+')
 
-# browser = webdriver.PhantomJS(executable_path='D:/ProgramData/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
+browser = webdriver.PhantomJS(executable_path='D:/ProgramData/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
 # browser = webdriver.Chrome(executable_path='D:/ProgramData/Anaconda3/chromedriver_win32/chromedriver')
 # browser = webdriver.Chrome(executable_path='C:/Users/lk235/Anaconda3/chromedriver_win32/chromedriver')
-browser = webdriver.PhantomJS(executable_path='C:/Users/lk235/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
+# browser = webdriver.PhantomJS(executable_path='C:/Users/lk235/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
 browser.get("http://www.kinghome.it/jking/index.php#log")
 
 username = WebDriverWait(browser, 10).until(
@@ -56,11 +56,12 @@ ivatoText = []
 descText = []
 
 def getproduct():
-    list
+
     prices = browser.find_elements_by_class_name('final-price')
     for price in prices:
-        print(price.text)
-        ivatoText.append(price.text)
+        price = str(price.text).strip('€')
+        print(price)
+        ivatoText.append(price)
 
 
 
@@ -71,6 +72,7 @@ def getproduct():
         print(description.get_text())
         descText.append(description.get_text())
 
+
     eans = browser.find_elements_by_xpath("//li/table/tbody/tr[1]/td[2]")
     for ean in eans:
         print(ean.text)
@@ -80,8 +82,9 @@ nextPage = browser.get('http://www.kinghome.it/jking/product/?fl=&lang=zh-cn')
 time.sleep(5)
 getproduct()
 count = 0
+page = 1
 
-while count < 10:
+while True:
     try:
         nextPageLink = browser.find_element_by_id('next')
     except:
@@ -99,12 +102,14 @@ while count < 10:
     getproduct()
     count = count + 1
 
-csvFile = open("C:/Users/lk235/Desktop/titago/python/test.csv",'w+')
+
+# csvFile = open("C:/Users/lk235/Desktop/titago/python/test.csv",'w+')
+csvFile = open("C:/Users/Administrator/Desktop/titago/python/test.csv",'w+',newline='',encoding='utf-8')
 try:
     writer = csv.writer(csvFile)
-    writer.writerow(('ean', 'des', 'ivato'))
-    for i in range(0,len(eanText)-1):
-        writer.writerow((eanText[i],descText[i],ivatoText[i]))
+    writer.writerow(('EAN', 'DESCRIZIONE', 'IVATO','COMPANY'))
+    for i in range(0,len(eanText)):
+        writer.writerow((eanText[i],descText[i],ivatoText[i],'kinghome'))
 
 finally:
     csvFile.close()
