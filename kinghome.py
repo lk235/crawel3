@@ -82,10 +82,10 @@ def getproduct():
 nextPage = browser.get('http://www.kinghome.it/jking/product/?fl=&lang=zh-cn')
 time.sleep(5)
 getproduct()
-count = 0
+count = 1
 page = 1
 
-while count < 5:
+while count < 393:
     nextPageLink = browser.find_element_by_id('next')
 
     # try:
