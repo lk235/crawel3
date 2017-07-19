@@ -10,6 +10,7 @@ from  selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
 import time
 import csv
 import pymysql
@@ -24,10 +25,10 @@ passwordStr = 'abcd'
 # conn.close()
 # csvFile = open("C:/Users/Administrator/Desktop/titago/python/test.csv",'w+')
 
-browser = webdriver.PhantomJS(executable_path='D:/ProgramData/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
+# browser = webdriver.PhantomJS(executable_path='D:/ProgramData/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
 # browser = webdriver.Chrome(executable_path='D:/ProgramData/Anaconda3/chromedriver_win32/chromedriver')
 # browser = webdriver.Chrome(executable_path='C:/Users/lk235/Anaconda3/chromedriver_win32/chromedriver')
-# browser = webdriver.PhantomJS(executable_path='C:/Users/lk235/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
+browser = webdriver.PhantomJS(executable_path='C:/Users/lk235/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
 browser.get("http://www.kinghome.it/jking/index.php#log")
 
 username = WebDriverWait(browser, 10).until(
@@ -84,11 +85,15 @@ getproduct()
 count = 0
 page = 1
 
-while True:
-    try:
-        nextPageLink = browser.find_element_by_id('next')
-    except:
-        break
+while count < 5:
+    nextPageLink = browser.find_element_by_id('next')
+
+    # try:
+    #     nextPageLink = browser.find_element_by_id('next')
+    # except NoSuchElementException:
+    #     print('break')
+    #     break
+
     # try:
     #     nextPageLink = WebDriverWait(browser, 10).until(
     #         EC.presence_of_element_located((By.ID, "next"))
@@ -101,10 +106,11 @@ while True:
     time.sleep(5)
     getproduct()
     count = count + 1
+    print('page'+ str(count))
 
 
-# csvFile = open("C:/Users/lk235/Desktop/titago/python/test.csv",'w+')
-csvFile = open("C:/Users/Administrator/Desktop/titago/python/test.csv",'w+',newline='',encoding='utf-8')
+csvFile = open("C:/Users/lk235/Desktop/titago/python/test.csv",'w+',newline='',encoding='utf-8')
+# csvFile = open("C:/Users/Administrator/Desktop/titago/python/test.csv",'w+',newline='',encoding='utf-8')
 try:
     writer = csv.writer(csvFile)
     writer.writerow(('EAN', 'DESCRIZIONE', 'IVATO','COMPANY'))
@@ -114,11 +120,6 @@ try:
 finally:
     csvFile.close()
 
-# listAll = []
-# for i in range(0,len(eanText)-1):
-#     listAll.append(eanText[i] +','+descText[i] +','+ivatoText[i])
-#
-# print(listAll)
 
 
 
