@@ -13,6 +13,11 @@ eanText = []
 ivatoText = []
 descText = []
 product_class = []
+list1 = ["%.2d" % i for i in range(2,48)]
+list2 = []
+page_org = 'http://www.kinghome.it/theme1/?home&flCode='
+for i in list1:
+    list2.append(page_org+i)
 
 def getProducts():
     pageSource = browser.page_source
@@ -22,15 +27,23 @@ def getProducts():
     descriptions = bsObj.findAll('div', {'class': 'property name'})
     prices = bsObj.findAll('div', {'class': 'property price'})
     barcodes = bsObj.findAll('div', {'class': 'property barcode'})
+    current_class = bsObj.findChild('div', {'class': 'sub-title selected '}).contents[0]
+    # current_class = browser.find_element_by_xpath("//div[@class='sub-title selected']/a")
+    # / html / body / main / aside / ul / li[3] / div / a
     # print(descriptions)
     for description in descriptions:
-        print(description.get_text())
+        # print(description.get_text())
         descText.append(description.get_text())
     for price in prices:
         price = str(price.text).strip('€')
-        print(price)
+        ivatoText.append(price)
     for barcode in barcodes:
+        eanText.append(barcode.get_text())
+        product_class.append(current_class.get_text())
         print(barcode.get_text())
+        print(current_class.get_text())
+
+
 
 browser = webdriver.PhantomJS(executable_path='C:/Users/lk235/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
 # browser = webdriver.PhantomJS(executable_path='D:/ProgramData/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
@@ -51,10 +64,22 @@ log_button.click()
 print("click")
 time.sleep(10)
 
-browser.get('http://www.kinghome.it/theme1/?home&flCode=02')
-time.sleep(10)
+for page in list2:
+    browser.get(page)
+    time.sleep(10)
+    getProducts()
+    while True:
+        try:
+            nextPageLink = browser.find_element_by_xpath("//li[@class='item next']/a")
+            nextPageLink.click()
+            time.sleep(10)
+            getProducts()
+        except NoSuchElementException:
+            break
+# browser.get('http://www.kinghome.it/theme1/?home&flCode=02')
 
-getProducts()
+
+
 # nextPageLink = browser.find_element_by_xpath("//li[@class='item next']/a")
 # print(nextPageLink)
 # nextPageLink.click()
@@ -63,17 +88,22 @@ getProducts()
 
 
 
-while True:
-    try:
-        nextPageLink = browser.find_element_by_xpath("//li[@class='item next']/a")
-        nextPageLink.click()
-        time.sleep(10)
-        getProducts()
-    except NoSuchElementException:
-        break
+
 
 
 print('DONE')
+
+csvFile = open("C:/Users/lk235/Desktop/titago/python/test.csv",'w+',newline='',encoding='utf-8')
+# csvFile = open("C:/Users/Administrator/Desktop/titago/python/test.csv",'w+',newline='',encoding='utf-8')
+try:
+    writer = csv.writer(csvFile)
+    writer.writerow(('EAN', 'DESCRIZIONE', 'IVATO','CATRGORY'))
+    for i in range(0,len(eanText)):
+        writer.writerow((eanText[i],descText[i],ivatoText[i],product_class[i]))
+
+finally:
+    csvFile.close()
+
 
 
 
