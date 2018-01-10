@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from  selenium import webdriver
+from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -13,7 +13,12 @@ eanText = []
 ivatoText = []
 descText = []
 product_class = []
-list1 = ["%.2d" % i for i in range(2,48)]
+# list1 = ["%.2d" % i for i in range(2,48)]
+# list1 = ["%.2d" % i for i in range(2,5)]
+# list1 = ["%.2d" % i for i in range(5,20)]
+# list1 = ["%.2d" % i for i in range(20,39)]
+list1 = ["%.2d" % i for i in range(39,48)]
+
 list2 = []
 page_org = 'http://www.kinghome.it/theme1/?home&flCode='
 for i in list1:
@@ -27,7 +32,7 @@ def getProducts():
     descriptions = bsObj.findAll('div', {'class': 'property name'})
     prices = bsObj.findAll('div', {'class': 'property price'})
     barcodes = bsObj.findAll('div', {'class': 'property barcode'})
-    current_class = bsObj.findChild('div', {'class': 'sub-title selected '}).contents[0]
+    # current_class = bsObj.findChild('div', {'class': 'sub-title selected '}).contents[0]
     # current_class = browser.find_element_by_xpath("//div[@class='sub-title selected']/a")
     # / html / body / main / aside / ul / li[3] / div / a
     # print(descriptions)
@@ -45,8 +50,9 @@ def getProducts():
 
 
 
-browser = webdriver.PhantomJS(executable_path='C:/Users/lk235/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
-# browser = webdriver.PhantomJS(executable_path='D:/ProgramData/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
+# browser = webdriver.PhantomJS(executable_path='C:/Users/lk235/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
+browser = webdriver.PhantomJS(executable_path='D:/ProgramData/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
+
 # browser = webdriver.Chrome(executable_path='D:/ProgramData/Anaconda3/chromedriver_win32/chromedriver')
 # browser = webdriver.Chrome(executable_path='C:/Users/lk235/Anaconda3/chromedriver_win32/chromedriver')
 browser.get("http://www.kinghome.it")
@@ -67,6 +73,9 @@ time.sleep(10)
 for page in list2:
     browser.get(page)
     time.sleep(10)
+    pageSource = browser.page_source
+    bsObj = BeautifulSoup(pageSource, "lxml")
+    current_class = bsObj.findChild('div', {'class': 'sub-title selected '}).contents[0]
     getProducts()
     while True:
         try:
@@ -86,15 +95,10 @@ for page in list2:
 # nextPage = browser.find_element_by_link_text('下一页')
 
 
-
-
-
-
-
 print('DONE')
 
-csvFile = open("C:/Users/lk235/Desktop/titago/python/test.csv",'w+',newline='',encoding='utf-8')
-# csvFile = open("C:/Users/Administrator/Desktop/titago/python/test.csv",'w+',newline='',encoding='utf-8')
+# csvFile = open("C:/Users/lk235/Desktop/titago/python/test.csv",'w+',newline='',encoding='utf-8')
+csvFile = open("C:/Users/Administrator/Desktop/titago/python/kinghome04.csv",'w+',newline='',encoding='utf-8')
 try:
     writer = csv.writer(csvFile)
     writer.writerow(('EAN', 'DESCRIZIONE', 'IVATO','CATRGORY'))
