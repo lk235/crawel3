@@ -17,7 +17,7 @@ product_class = []
 # list1 = ["%.2d" % i for i in range(2,5)]
 # list1 = ["%.2d" % i for i in range(5,20)]
 # list1 = ["%.2d" % i for i in range(20,39)]
-list1 = ["%.2d" % i for i in range(39,48)]
+list1 = ["%.2d" % i for i in range(41,48)]
 
 list2 = []
 page_org = 'http://www.kinghome.it/theme1/?home&flCode='
@@ -50,8 +50,8 @@ def getProducts():
 
 
 
-# browser = webdriver.PhantomJS(executable_path='C:/Users/lk235/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
-browser = webdriver.PhantomJS(executable_path='D:/ProgramData/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
+browser = webdriver.PhantomJS(executable_path='C:/Users/lk235/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
+# browser = webdriver.PhantomJS(executable_path='D:/ProgramData/Anaconda3/phantomjs-2.1.1-windows/bin/phantomjs')
 
 # browser = webdriver.Chrome(executable_path='D:/ProgramData/Anaconda3/chromedriver_win32/chromedriver')
 # browser = webdriver.Chrome(executable_path='C:/Users/lk235/Anaconda3/chromedriver_win32/chromedriver')
@@ -97,8 +97,8 @@ for page in list2:
 
 print('DONE')
 
-# csvFile = open("C:/Users/lk235/Desktop/titago/python/test.csv",'w+',newline='',encoding='utf-8')
-csvFile = open("C:/Users/Administrator/Desktop/titago/python/kinghome04.csv",'w+',newline='',encoding='utf-8')
+csvFile = open("C:/Users/lk235/Desktop/titago/python/kinghome05.csv",'w+',newline='',encoding='utf-8')
+# csvFile = open("C:/Users/Administrator/Desktop/titago/python/kinghome04.csv",'w+',newline='',encoding='utf-8')
 try:
     writer = csv.writer(csvFile)
     writer.writerow(('EAN', 'DESCRIZIONE', 'IVATO','CATRGORY'))

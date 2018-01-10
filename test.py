@@ -1,4 +1,4 @@
-list1 = ["%.2d" % i for i in range(2,48)]
+list1 = ["%.2d" % i for i in range(39,40)]
 list2 = []
 print(list1)
 str = 'http://www.kinghome.it/theme1/?home&flCode='
